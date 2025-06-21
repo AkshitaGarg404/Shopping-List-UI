@@ -1,6 +1,12 @@
-//✅Functionality: Add Items to the list
-//get the form
+//Getting all the elements first
 const itemForm=document.querySelector('#item-form')
+const itemList=document.querySelector('#item-list')
+const itemInput=document.querySelector('#item-input')
+const filter=document.querySelector('#filter')
+
+
+//✅Functionality: Add Items to the list
+//form element: itemForm
 //Add an eventListener for submit
 itemForm.addEventListener('submit',(e)=>{
     //Prevent form from submitting first
@@ -27,6 +33,6 @@ itemForm.addEventListener('submit',(e)=>{
 
     li.appendChild(button)
 
-    const ul=document.querySelector('#item-list')
-    ul.appendChild(li);
+    itemList.appendChild(li);
 });
+
