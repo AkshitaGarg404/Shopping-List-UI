@@ -7,8 +7,7 @@ const filter=document.querySelector('#filter')
 
 //✅Functionality: Add Items to the list
 //form element: itemForm
-//Add an eventListener for submit
-itemForm.addEventListener('submit',(e)=>{
+function addItem(e){
     //Prevent form from submitting first
     e.preventDefault();
     //Create a new list item
@@ -18,7 +17,12 @@ itemForm.addEventListener('submit',(e)=>{
 
     //Text node: use FormData to get submitted value: using name attribute
     const formData=new FormData(itemForm)
-    const text=document.createTextNode(formData.get('item'))
+    //Validate input
+    if(itemInput.value===""){ //or formData.get('item')
+        alert("Please enter a valid item")
+        return; //very important coz otherwise it will keep on executing outside the if too
+    }
+    const text=document.createTextNode(formData.get('item')) //Its better to put formData.get('item') in a variable since we are using it again and again
     li.appendChild(text)
 
     //Button
@@ -34,5 +38,11 @@ itemForm.addEventListener('submit',(e)=>{
     li.appendChild(button)
 
     itemList.appendChild(li);
-});
 
+    itemInput.value=''// very necessary to clear Enter item
+};
+
+
+
+//Event Listeners
+itemForm.addEventListener('submit', addItem)
