@@ -125,7 +125,7 @@ header h1 {
   }
 }
 
-.hidden{
+.hidden {
   /* Alternatively display:block; if you want to display something */
-  display:none;   
+  display: none !important;
 }

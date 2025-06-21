@@ -100,6 +100,24 @@ function checkUI(){
     }
 }
 
+
+//✅Functionality: Filter Items
+function filterItems(e){
+    const val=e.target.value.toLowerCase()
+    const items=document.querySelectorAll('#item-list li')
+    items.forEach(item=>{
+        //const text=item.firstChild.textContent is better as innerText is slower than textContent
+        //if(str.indexOf(val)!==-1)
+        if(item.innerText.toLowerCase().includes(val)){
+            //item.style.display='flex'
+            item.classList.remove('hidden')
+        } else {
+            //item.style.display='none'
+            item.classList.add('hidden')
+        }
+    });
+}
+
 //Event Listeners
 //adding item
 itemForm.addEventListener('submit', addItem)
@@ -111,3 +129,4 @@ clearAll.addEventListener('click',onClear)
 window.addEventListener('DOMContentLoaded',()=>{
     checkUI();
 })
+filter.addEventListener('input',filterItems)
