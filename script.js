@@ -3,6 +3,7 @@ const itemForm=document.querySelector('#item-form')
 const itemList=document.querySelector('#item-list')
 const itemInput=document.querySelector('#item-input')
 const filter=document.querySelector('#filter')
+const clearAll=document.querySelector('#clear')
 
 
 //✅Functionality: Add Items to the list
@@ -43,6 +44,37 @@ function addItem(e){
 };
 
 
+//✅Functionality: Remove Item from the list on clicking cross
+function removeItem(e){
+    //1: Better
+    if(e.target.closest('.remove-item')){
+        if(e.target.closest('li')){
+            e.target.closest('li').remove();
+        }
+    }
+
+    //2: not that readable
+    // if(e.target.parentElement.classList.contains('remove-item')){
+    //     e.target.parentElement.parentElement.remove();
+    // }
+}
+
+// ✅Functionality: Clear All items: just set innerHTML of ul as empty
+function onClear(){
+    // 1:direct
+    // itemList.innerHTML=""
+
+    //2: using loop
+    while(itemList.firstChild){
+        itemList.removeChild(itemList.firstChild)
+    }
+
+}
 
 //Event Listeners
+//adding item
 itemForm.addEventListener('submit', addItem)
+//Event Delegation: add remove item to parent
+itemList.addEventListener('click',removeItem)
+//Clear all
+clearAll.addEventListener('click',onClear)
