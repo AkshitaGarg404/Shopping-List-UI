@@ -124,3 +124,12 @@ header h1 {
     width: 100%;
   }
 }
+
+.hidden {
+  /* Alternatively display:block; if you want to display something */
+  display: none !important;
+}
+
+.edit-mode{
+  color:#666
+}
