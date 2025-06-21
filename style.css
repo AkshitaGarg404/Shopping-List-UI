@@ -129,3 +129,7 @@ header h1 {
   /* Alternatively display:block; if you want to display something */
   display: none !important;
 }
+
+.edit-mode{
+  color:#666
+}

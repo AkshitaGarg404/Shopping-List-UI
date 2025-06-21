@@ -4,6 +4,10 @@ const itemList=document.querySelector('#item-list')
 const itemInput=document.querySelector('#item-input')
 const filter=document.querySelector('#filter')
 const clearAll=document.querySelector('#clear')
+const formBtn=itemForm.querySelector('button')  //Add/update item
+//for edit mode
+let isEditMode=false
+
 //Getting items from storage:
 function getItemsFromLocal(){
     return JSON.parse(localStorage.getItem('items'))||[];  //efficiently using or
@@ -48,12 +52,41 @@ function addItem(e){
         alert("Please enter a valid item")
         return; //very important coz otherwise it will keep on executing outside the if too
     }
+    //Check for edit mode: if yes first remove
+    if(isEditMode){
+        //Now remove old element from DOM(UI) and storage and create an entirely new item with new name
+        //get item to be removed: it has one of the class='edit-mode'
+        const itemOld=document.querySelector('#item-list .edit-mode ')
+        //now remove class
+        itemOld.classList.remove('edit-mode')
+        removeItem(itemOld);
+        isEditMode=false
+        //Change button back
+        formBtn.innerHTML='<i class="fa-solid fa-plus"></i> Add Item'
+        formBtn.style.backgroundColor='#333'
+        //now it will just proceed and add new item
+    }
+    //Checking for duplicate value:
+    if(isDuplicate(item)){
+        itemInput.value=''
+        alert('Item already exists')
+        return;
+    }
     //Creating UI item, clearing input field, and unhiding filter and clear all
     addItemUI(item);
     itemInput.value=''// very necessary to clear Enter item
     unhide(); //Unhide filter and clearAll
     //Adding to Storage
     addItemToLocal(item);
+}
+
+
+//✅Functionality: Checking for duplicate element
+function isDuplicate(item){
+    let items=getItemsFromLocal()
+    items=items.filter(thing=>thing===item)
+    return items.length>0
+    //or direct: items.includes(item) //returns boolean value
 }
 
 
@@ -79,6 +112,9 @@ function clickOnItem(e){
     // if(e.target.parentElement.classList.contains('remove-item'))
     if(e.target.closest('.remove-item')){
         removeItem(e.target);
+    } else {
+        setItemToEdit(e.target)
+        //Here e.target.tagName==='LI' always .. that means we are passing list item to this function
     }
 }
 
@@ -102,13 +138,30 @@ function removeItem(eleClicked){
     // e.target.parentElement.parentElement.remove();
     const item=eleClicked.closest('li')
     if(item){
-        if(confirm(`Are you sure you want to remove '${item.innerText}' from the list`)){
+        if(isEditMode||confirm(`Are you sure you want to remove '${item.innerText}' from the list`)){
             removeItemUI(item);
             removeItemFromLocal(item);
         }
     }
 }
 
+
+
+//✅Functionality: Setting edit mode handler
+function setItemToEdit(item){
+    isEditMode=true;
+    //Reset any previously selected element out of edit mode
+    document.querySelectorAll('#item-list li').forEach(item=>{
+        item.classList.remove('edit-mode')
+    })
+    //make current item into edit mode
+    item.classList.add('edit-mode')
+    //Change innerHtml of formBtn
+    formBtn.innerHTML='<i class="fa-solid fa-pen"></i> Update Item'
+    formBtn.style.backgroundColor='#228B22'
+    //Put item name in place of Enter Item
+    itemInput.value=item.innerText
+}
  
 
 
